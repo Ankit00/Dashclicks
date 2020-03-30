@@ -1,0 +1,22 @@
+{
+  "name": "dashclicks",
+  "version": "1.0.0",
+  "description": "Interview Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ankit00/Dashclicks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ankit00/Dashclicks/issues"
+  },
+  "homepage": "https://github.com/Ankit00/Dashclicks#readme",
+  "dependencies": {
+    "googleapis": "^48.0.0"
+  }
+}

@@ -4,6 +4,8 @@ const {
     google
 } = require('googleapis');
 const gmail = google.gmail('v1');
+const express = require('express');
+const app = express();
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -73,65 +75,48 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-//For Fetching One Mail (Practice)
-
-const fetchOneMail = async (auth) => {
-    await gmail.users.messages.list({
-        auth: auth,
-        userId: 'me',
-        maxResults: 1
-    }, async (error, response) => {
-        if (error) return error;
-        const messageId = response.data.messages[0].id;
-        console.log(messageId);
-        await gmail.users.messages.get({
-            id: messageId,
-            auth: auth,
+//For Fetching Mail IDs
+const getMessageIds = (maxResults, auth) => {
+    return new Promise((resolve, reject) => {
+        gmail.users.messages.list({
+            auth,
             userId: 'me',
-        }, (err, message) => {
-            if (err) return err
-            console.log(message.data);
-            const data = message.data;
-            if (data.payload && data.payload.body && data.payload.body.data) {
-                const data = data.payload.body.data;
-                const buff = Buffer.from(data, 'base64');
-                console.log(buff.toString());
-            }
-            console.log(data);
+            maxResults
+        }, (err, res) => {
+            if (err) reject(err)
+            resolve(res.data.messages.map((el) => el.id))
+        });
+    })
+}
+
+//For Fetching a particular mail with id
+const getMailById = (auth, mailId) => {
+    return new Promise((resolve, reject) => {
+        gmail.users.messages.get({
+            id: mailId,
+            userId: 'me',
+            auth
+        }, (error, response) => {
+            if (error) reject(error)
+            resolve(response.data);
         })
     })
 }
 
-
-//For Fetching 10 Mails
-
-const fetchTenMails = (auth) => {
-    let buntyBhai = new Array();
-    gmail.users.messages.list({
-        userId: 'me',
-        auth,
-        maxResults: 10
-    }, (err, res) => {
-        if (err) return err;
-        const messageIds = res.data.messages.map(message => message.id);
-        console.log(messageIds);
-
-        const topTenMails = messageIds.map(id => {
-            gmail.users.messages.get({
-                id,
-                auth,
-                userId: 'me',
-            }, (err, response) => {
-                if (err) return err;
-                const data = response.data;
-                if (response.data && response.data.payload && response.data.payload.body && response.data.payload.body.data) {
-                    const buffer = Buffer.from(response.data.payload.body.data, 'base64');
-                    buntyBhai.push(buffer.toString());
-                    console.log(buffer.toString())
-                }
-                buntyBhai.push(data);
-                console.log(data);
-            })
-        });
-    })
+//For Fetching Given Number of Mails(Default 10) 
+const fetchTenMails = async (auth) => {
+    let mailArray = new Array();
+    const messageIds = await getMessageIds(2, auth);
+    console.log(messageIds);
+    Promise.all(messageIds.map(async id => {
+        const mail = await getMailById(auth, id)
+        mailArray.push(mail);
+        console.log(mailArray);
+    }));
 }
+app.use('/', fetchTenMails);
+app.use('/:id', getMailById);
+
+app.listen(3000, () => {
+    console.log('Server listening to port 3000')
+})

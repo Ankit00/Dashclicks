@@ -106,6 +106,7 @@ const fetchOneMail = async (auth) => {
 //For Fetching 10 Mails
 
 const fetchTenMails = (auth) => {
+    let buntyBhai = new Array();
     gmail.users.messages.list({
         userId: 'me',
         auth,
@@ -125,8 +126,10 @@ const fetchTenMails = (auth) => {
                 const data = response.data;
                 if (response.data && response.data.payload && response.data.payload.body && response.data.payload.body.data) {
                     const buffer = Buffer.from(response.data.payload.body.data, 'base64');
+                    buntyBhai.push(buffer.toString());
                     console.log(buffer.toString())
                 }
+                buntyBhai.push(data);
                 console.log(data);
             })
         });

@@ -34,12 +34,18 @@ const getMailById = async (id) => {
 
                 //Please Uncomment this Code for decoding the mail
 
-                // if (response.data && response.data.payload &&
+                // else if (response.data && response.data.payload &&
                 //     response.data.payload.parts && response.data.payload.parts[0].body &&
                 //     response.data.payload.parts[0].body.data) {
                 //     const buffer = Buffer.from(response.data.payload.parts[0].body.data, 'base64');
                 //     resolve(buffer.toString())
+                // } else if (response.data && response.data.payload &&
+                //     response.data.payload.body &&
+                //     response.data.payload.body.data) {
+                //     const buffer = Buffer.from(response.data.payload.body.data, 'base64');
+                //     resolve(buffer.toString())
                 // } 
+
                 else {
                     resolve(response.data);
                 }

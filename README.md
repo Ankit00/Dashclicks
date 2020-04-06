@@ -16,7 +16,7 @@ There are following 2 API's in this application
 
 You can open and test these API's on any browser or postman.
 
-Note -> For the first time when you'll hit any of these api's you'll be asked to click on a link on the console. On clicking it you'll be provided a token code to authenticate which needs to be paste on the console.
+Note -> For the first time when you'll hit any of these api's you'll be asked to click on a link on the console. On clicking it you'll be provided a token code to authenticate which needs to be pasted on the console.
 After that a token.json file will be generated and as long as its there there is no need to authenticate again.
 
 Mail data would be encrypted but in case you want to decrypt that data you can uncomment the code from line number 37 - 42 in the mailController.js file present in Controllers directory.

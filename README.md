@@ -1,6 +1,4 @@
-# Dashclicks
-
-Interview Project
+# Gmail Api
 
 Hello and welcome to this gmail api for fetching mails from your gmail and displaying them on the brpwser.
 
